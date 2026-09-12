@@ -8,5 +8,6 @@ router.post('/', skillCtrl.createSkill);
 router.get('/', skillCtrl.getSkills);
 router.get('/:id', skillCtrl.getSkill);
 router.put('/:id', skillCtrl.updateSkill);
+router.delete('/:id', skillCtrl.deleteSkill);
 
 module.exports = router;
