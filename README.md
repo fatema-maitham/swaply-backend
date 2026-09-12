@@ -14,50 +14,50 @@ The platform also includes an admin side for managing users, skills, swap reques
 
 ### Guest User Stories
 
-* As a guest, I can view the home page explaining how skill swap works.
-* As a guest, I can browse available skills.
-* As a guest, I can search for skills.
-* As a guest, I can filter skills by category.
-* As a guest, I can view the details of a specific skill.
-* As a guest, I can view other users' profiles.
-* As a guest, I can sign up for an account.
-* As a guest, I can log in to my account.
+- As a guest, I can view the home page explaining how skill swap works.
+- As a guest, I can browse available skills.
+- As a guest, I can search for skills.
+- As a guest, I can filter skills by category.
+- As a guest, I can view the details of a specific skill.
+- As a guest, I can view other users' profiles.
+- As a guest, I can sign up for an account.
+- As a guest, I can log in to my account.
 
 ### General User Stories
 
-* As a user, I can log in to my account.
-* As a user, I can log out of my account.
-* As a user, I can view and edit my profile.
-* As a user, I can add a skill that I can teach.
-* As a user, I can view available skills.
-* As a user, I can search for skills I want to learn.
-* As a user, I can filter skills by category.
-* As a user, I can view the details of a skill.
-* As a user, I can edit my own skills.
-* As a user, I can delete my own skills.
-* As a user, I can send a skill swap request to another user.
-* As a user, I can view my swap requests.
-* As a user, I can view the details of a swap.
-* As a user, I can accept a swap request.
-* As a user, I can reject a swap request.
-* As a user, I can cancel a swap request.
-* As a user, I can mark a swap as completed.
-* As a user, I can leave a review after completing a swap.
-* As a user, I can view reviews.
-* As a user, I can edit my own review.
-* As a user, I can delete my own review.
+- As a user, I can log in to my account.
+- As a user, I can log out of my account.
+- As a user, I can view and edit my profile.
+- As a user, I can add a skill that I can teach.
+- As a user, I can view available skills.
+- As a user, I can search for skills I want to learn.
+- As a user, I can filter skills by category.
+- As a user, I can view the details of a skill.
+- As a user, I can edit my own skills.
+- As a user, I can delete my own skills.
+- As a user, I can send a skill swap request to another user.
+- As a user, I can view my swap requests.
+- As a user, I can view the details of a swap.
+- As a user, I can accept a swap request.
+- As a user, I can reject a swap request.
+- As a user, I can cancel a swap request.
+- As a user, I can mark a swap as completed.
+- As a user, I can leave a review after completing a swap.
+- As a user, I can view reviews.
+- As a user, I can edit my own review.
+- As a user, I can delete my own review.
 
 ### Admin User Stories
 
-* As an admin, I can access an admin dashboard.
-* As an admin, I can view platform statistics.
-* As an admin, I can view all users.
-* As an admin, I can delete a user account.
-* As an admin, I can view all skills.
-* As an admin, I can delete an inappropriate skill.
-* As an admin, I can view all swap requests.
-* As an admin, I can view all reviews.
-* As an admin, I can delete an inappropriate review.
+- As an admin, I can access an admin dashboard.
+- As an admin, I can view platform statistics.
+- As an admin, I can view all users.
+- As an admin, I can delete a user account.
+- As an admin, I can view all skills.
+- As an admin, I can delete an inappropriate skill.
+- As an admin, I can view all swap requests.
+- As an admin, I can view all reviews.
+- As an admin, I can delete an inappropriate review.
 
 ## ERD
 
@@ -135,8 +135,8 @@ The platform also includes an admin side for managing users, skills, swap reques
 
 ### Prerequisites
 
-* Node.js and npm installed
-* MongoDB installed or MongoDB Atlas account
+- Node.js and npm installed
+- MongoDB installed or MongoDB Atlas account
 
 ### Installation
 
@@ -176,28 +176,28 @@ npm run dev
 
 ### Frontend
 
-* React (Vite)
-* JavaScript
-* CSS
-* React Router DOM
+- React (Vite)
+- JavaScript
+- CSS
+- React Router DOM
 
 ### Backend
 
-* Node.js
-* Express.js
-* MongoDB
-* Mongoose
-* JWT
-* bcrypt
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT
+- bcrypt
 
 ## Future Enhancements
 
-* Skill matching and recommendations
-* Skill availability scheduling
-* User skill badges
-* Advanced skill discovery
-* Saved skills
-* User reputation system
-* Notifications for swap requests
-* In-app messaging
-* Calendar integration
+- Skill matching and recommendations
+- Skill availability scheduling
+- User skill badges
+- Advanced skill discovery
+- Saved skills
+- User reputation system
+- Notifications for swap requests
+- In-app messaging
+- Calendar integration
