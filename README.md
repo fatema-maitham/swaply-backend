@@ -71,11 +71,10 @@ The platform also includes an admin side for managing users, skills, swap reques
 
 ### Auth Routes
 
-| **HTTP Method** | **Controller** | **Response** | **URI**        | **Use Case**                  |
-| --------------- | -------------- | -----------: | -------------- | ----------------------------- |
-| POST            | signup         |          201 | `/auth/signup` | Create a new user account     |
-| POST            | login          |          200 | `/auth/login`  | Login with email and password |
-
+| **HTTP Method** | **Controller** | **Response** | **URI**          | **Use Case**                  |
+| --------------- | -------------- | -----------: | --------------- | ----------------------------- |
+| POST            | signup         |          201 | `/auth/sign-up` | Create a new user account     |
+| POST            | login          |          200 | `/auth/sign-in` | Login with email and password |
 ### User Routes
 
 | **HTTP Method** | **Controller** | **Response** | **URI**          | **Use Case**             |
