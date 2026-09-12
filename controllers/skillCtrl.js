@@ -18,6 +18,18 @@ const createSkill = async (req, res) => {
   }
 };
 
+const getSkills = async (req, res) => {
+  try {
+    const skills = await Skill.find();
+
+    res.status(200).json({ skills });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ err: 'Something went wrong' });
+  }
+};
+
 module.exports = {
   createSkill,
+  getSkills,
 };
