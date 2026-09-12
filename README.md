@@ -1,4 +1,14 @@
-# swaply-backend
+# Swaply
+
+Swaply is a full-stack MERN skill-sharing platform where users can exchange skills with each other. Users can discover skills they want to learn, offer skills they can teach, send and manage skill swap requests, and review other users after completing a swap.
+
+The platform also includes an admin side for managing users, skills, swap requests, and reviews.
+
+## Planning Materials
+
+### Trello Board
+
+[Swaply Trello Board](https://trello.com/invite/b/6aa2a461a9e94d4fab436ab8/ATTI633568baa47f25f4ff4b77b4650889c62984E480/swaply)
 
 ## User Stories
 
@@ -48,15 +58,14 @@
 * As an admin, I can view all swap requests.
 * As an admin, I can view all reviews.
 * As an admin, I can delete an inappropriate review.
----
 
 ## ERD
 
----
+![Swaply ERD](./plan/erd.png)
 
 ## Wireframes
 
----
+![Swaply Wireframes](./plan/wireframes.png)
 
 ## Routes
 
@@ -120,5 +129,75 @@
 
 ## Component Hierarchy Diagram
 
-![Component Hierarchy Diagram](./plan/component-hierarchy.png)
+![Swaply Component Hierarchy Diagram](./plan/component-hierarchy.png)
 
+## Getting Started
+
+### Prerequisites
+
+* Node.js and npm installed
+* MongoDB installed or MongoDB Atlas account
+
+### Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/fatema-maitham/swaply-frontend.git
+```
+
+Navigate into the project folder:
+
+```bash
+cd swaply-frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Create a `.env` file in the root of the project:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+PORT=3000
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+## Technologies Used
+
+### Frontend
+
+* React (Vite)
+* JavaScript
+* CSS
+* React Router DOM
+
+### Backend
+
+* Node.js
+* Express.js
+* MongoDB
+* Mongoose
+* JWT
+* bcrypt
+
+## Future Enhancements
+
+* Skill matching and recommendations
+* Skill availability scheduling
+* User skill badges
+* Advanced skill discovery
+* Saved skills
+* User reputation system
+* Notifications for swap requests
+* In-app messaging
+* Calendar integration
