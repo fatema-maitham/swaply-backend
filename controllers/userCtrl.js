@@ -13,9 +13,17 @@ const getUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
+    const updateData = {
+      ...req.body,
+    };
+
+    if (req.file) {
+      updateData.profileImage = req.file.path;
+    }
+
     const user = await User.findByIdAndUpdate(
       req.user._id,
-      req.body,
+      updateData,
       { new: true }
     );
 
