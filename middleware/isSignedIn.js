@@ -2,11 +2,11 @@ const jwt = require('jsonwebtoken');
 
 const isSignedIn = (req, res, next) => {
   try {
-    const brearerToken = req.headers.authorization;
+    const bearerToken = req.headers.authorization;
 
-    if (!brearerToken) throw new Error('Login Required');
+    if (!bearerToken) throw new Error('Login Required');
 
-    const token = brearerToken.split(' ')[1];
+    const token = bearerToken.split(' ')[1];
 
     const payload = jwt.verify(token, process.env.JWT_SECRET);
 
