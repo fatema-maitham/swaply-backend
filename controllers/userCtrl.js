@@ -11,6 +11,22 @@ const getUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      req.body,
+      { new: true }
+    );
+
+    res.status(200).json({ user });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ err: 'Something went wrong' });
+  }
+};
+
 module.exports = {
   getUser,
+  updateUser,
 };
