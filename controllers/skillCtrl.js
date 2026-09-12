@@ -40,8 +40,24 @@ const getSkill = async (req, res) => {
   }
 };
 
+const updateSkill = async (req, res) => {
+  try {
+    const skill = await Skill.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    res.status(200).json({ skill });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ err: 'Something went wrong' });
+  }
+};
+
 module.exports = {
   createSkill,
   getSkills,
   getSkill,
+  updateSkill,
 };
