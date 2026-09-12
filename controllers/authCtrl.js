@@ -1,28 +1,35 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 const User = require('../models/user');
 
-const SALT_ROUDS = 10;
+const SALT_ROUNDS = 10;
 
 const signup = async (req, res) => {
   try {
-    // verify if the username alrady exists
-    const userInDatabase = await User.findOne({ username: req.body.username });
-    // if the user exists send error msg
+    const { name, email, password, bio, profileImage } = req.body;
+
+    const userInDatabase = await User.findOne({ email });
+
     if (userInDatabase) {
-      return res.status(409).json({ err: 'Invalid input' });
+      return res.status(409).json({ err: 'Email already exists' });
     }
 
-    // Encrypt the password
-    const hashedPassword = bcrypt.hashSync(req.body.password, SALT_ROUDS);
-    req.body.password = hashedPassword;
+    const hashedPassword = bcrypt.hashSync(password, SALT_ROUNDS);
 
-    // else lets check if the password match
-    // if password matches create the new user
-    const user = await User.create(req.body);
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      bio,
+      profileImage,
+    });
+
     const payload = {
-      username: user.username,
       _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET);
@@ -30,39 +37,45 @@ const signup = async (req, res) => {
     res.status(201).json({ user, token });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ err: 'something went wrong' });
+    res.status(500).json({ err: 'Something went wrong' });
   }
 };
 
 const login = async (req, res) => {
   try {
-    const userInDatabase = await User.findOne({ username: req.body.username });
+    const { email, password } = req.body;
 
-    // only allow users that exist to login
+    const userInDatabase = await User.findOne({ email });
+
     if (!userInDatabase) {
       return res.status(401).json({ err: 'Invalid credentials' });
     }
 
-    // make sure the user's password matches the req.body.password
-    if (!bcrypt.compareSync(req.body.password, userInDatabase.password)) {
+    const passwordMatches = bcrypt.compareSync(
+      password,
+      userInDatabase.password
+    );
+
+    if (!passwordMatches) {
       return res.status(401).json({ err: 'Invalid credentials' });
     }
 
-    // There is a user AND they had the correct password. Time to make a session!
-    // Avoid storing the password, even in hashed format, in the session
-    // If there is other data you want to save to `req.session.user`, do so here!
     const payload = {
-      username: userInDatabase.username,
       _id: userInDatabase._id,
+      name: userInDatabase.name,
+      email: userInDatabase.email,
+      role: userInDatabase.role,
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET);
 
-    res.json({ token });
-  } catch (error) {
-    console.log(error.message);
-
-    res.status(500).json({ err: error.message });
+    res.status(200).json({
+      user: userInDatabase,
+      token,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ err: 'Something went wrong' });
   }
 };
 
