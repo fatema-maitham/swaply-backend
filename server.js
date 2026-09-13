@@ -10,6 +10,7 @@ const app = express();
 const cors = require('cors');
 const logger = require('morgan');
 const isSignedIn = require('./middleware/isSignedIn');
+const isAdmin = require('./middleware/isAdmin');
 
 // Routers
 const authRouter = require('./routes/authRouter');
@@ -17,6 +18,7 @@ const userRouter = require('./routes/userRouter');
 const skillRouter = require('./routes/skillRouter');
 const swapRouter = require('./routes/swapRouter');
 const reviewRouter = require('./routes/reviewRouter');
+const adminRouter = require('./routes/adminRouter');
 
 app.use(cors());
 app.use(express.json());
@@ -34,6 +36,9 @@ app.use('/users', userRouter);
 app.use('/skills', skillRouter);
 app.use('/swaps', swapRouter);
 app.use('/reviews', reviewRouter);
+
+// ADMIN
+app.use('/admin', isAdmin, adminRouter);
 
 app.get('/protected', (req, res) => {
   try {
