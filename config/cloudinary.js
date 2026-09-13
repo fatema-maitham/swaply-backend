@@ -7,7 +7,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const storage = new CloudinaryStorage({
+const profileStorage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: 'swaply/profile-images',
@@ -15,7 +15,16 @@ const storage = new CloudinaryStorage({
   },
 });
 
+const skillStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'swaply/skill-images',
+    allowed_formats: ['jpg', 'jpeg', 'png'],
+  },
+});
+
 module.exports = {
   cloudinary,
-  storage,
+  profileStorage,
+  skillStorage,
 };
