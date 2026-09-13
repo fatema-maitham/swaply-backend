@@ -4,43 +4,75 @@ const createSkill = async (req, res) => {
   try {
     const { name, description, category } = req.body;
 
+    if (!req.file) {
+      return res.status(400).json({
+        err: 'Skill image is required',
+      });
+    }
+
     const skill = await Skill.create({
       name,
       description,
       category,
+      skillImage: req.file.path,
       owner: req.user._id,
     });
 
-    res.status(201).json({ skill });
+    const populatedSkill = await Skill.findById(skill._id).populate(
+      'owner',
+      'name profileImage'
+    );
+
+    res.status(201).json({
+      skill: populatedSkill,
+    });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ err: 'Something went wrong' });
+    res.status(500).json({
+      err: 'Something went wrong',
+    });
   }
 };
 
 const getSkills = async (req, res) => {
   try {
-    const skills = await Skill.find();
+    const skills = await Skill.find().populate(
+      'owner',
+      'name profileImage'
+    );
 
-    res.status(200).json({ skills });
+    res.status(200).json({
+      skills,
+    });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ err: 'Something went wrong' });
+    res.status(500).json({
+      err: 'Something went wrong',
+    });
   }
 };
 
 const getSkill = async (req, res) => {
   try {
-    const skill = await Skill.findById(req.params.id);
+    const skill = await Skill.findById(req.params.id).populate(
+      'owner',
+      'name profileImage'
+    );
 
     if (!skill) {
-      return res.status(404).json({ err: 'Skill not found' });
+      return res.status(404).json({
+        err: 'Skill not found',
+      });
     }
 
-    res.status(200).json({ skill });
+    res.status(200).json({
+      skill,
+    });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ err: 'Something went wrong' });
+    res.status(500).json({
+      err: 'Something went wrong',
+    });
   }
 };
 
@@ -49,7 +81,9 @@ const updateSkill = async (req, res) => {
     const skill = await Skill.findById(req.params.id);
 
     if (!skill) {
-      return res.status(404).json({ err: 'Skill not found' });
+      return res.status(404).json({
+        err: 'Skill not found',
+      });
     }
 
     if (skill.owner.toString() !== req.user._id.toString()) {
@@ -58,16 +92,30 @@ const updateSkill = async (req, res) => {
       });
     }
 
+    const updateData = {
+      ...req.body,
+    };
+
+    if (req.file) {
+      updateData.skillImage = req.file.path;
+    }
+
     const updatedSkill = await Skill.findByIdAndUpdate(
       req.params.id,
-      req.body,
-      { new: true }
-    );
+      updateData,
+      {
+        new: true,
+      }
+    ).populate('owner', 'name profileImage');
 
-    res.status(200).json({ skill: updatedSkill });
+    res.status(200).json({
+      skill: updatedSkill,
+    });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ err: 'Something went wrong' });
+    res.status(500).json({
+      err: 'Something went wrong',
+    });
   }
 };
 
@@ -76,7 +124,9 @@ const deleteSkill = async (req, res) => {
     const skill = await Skill.findById(req.params.id);
 
     if (!skill) {
-      return res.status(404).json({ err: 'Skill not found' });
+      return res.status(404).json({
+        err: 'Skill not found',
+      });
     }
 
     if (skill.owner.toString() !== req.user._id.toString()) {
@@ -92,7 +142,9 @@ const deleteSkill = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ err: 'Something went wrong' });
+    res.status(500).json({
+      err: 'Something went wrong',
+    });
   }
 };
 
