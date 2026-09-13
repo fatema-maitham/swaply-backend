@@ -20,7 +20,8 @@ const createSkill = async (req, res) => {
 
 const getSkills = async (req, res) => {
   try {
-    const skills = await Skill.find();
+    const skills = await Skill.find()
+      .populate('owner', 'name profileImage');
 
     res.status(200).json({ skills });
   } catch (err) {
@@ -31,7 +32,8 @@ const getSkills = async (req, res) => {
 
 const getSkill = async (req, res) => {
   try {
-    const skill = await Skill.findById(req.params.id);
+    const skill = await Skill.findById(req.params.id)
+      .populate('owner', 'name profileImage');
 
     if (!skill) {
       return res.status(404).json({ err: 'Skill not found' });
