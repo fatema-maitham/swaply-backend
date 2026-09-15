@@ -19,6 +19,7 @@ const skillRouter = require('./routes/skillRouter');
 const swapRouter = require('./routes/swapRouter');
 const reviewRouter = require('./routes/reviewRouter');
 const adminRouter = require('./routes/adminRouter');
+const categoryRoutes = require('./routes/categoryRoutes');
 
 app.use(cors());
 app.use(express.json());
@@ -28,6 +29,7 @@ app.use(logger('dev'));
 
 // PUBLIC
 app.use('/auth', authRouter);
+app.use('/categories', categoryRoutes);
 
 // PROTECTED
 app.use(isSignedIn);

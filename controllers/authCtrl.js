@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
@@ -12,10 +13,15 @@ const signup = async (req, res) => {
     const userInDatabase = await User.findOne({ email });
 
     if (userInDatabase) {
-      return res.status(409).json({ err: 'Email already exists' });
+      return res.status(409).json({
+        err: 'Email already exists',
+      });
     }
 
-    const hashedPassword = bcrypt.hashSync(password, SALT_ROUNDS);
+    const hashedPassword = bcrypt.hashSync(
+      password,
+      SALT_ROUNDS
+    );
 
     const user = await User.create({
       name,
@@ -32,12 +38,21 @@ const signup = async (req, res) => {
       role: user.role,
     };
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET);
+    const token = jwt.sign(
+      payload,
+      process.env.JWT_SECRET
+    );
 
-    res.status(201).json({ user, token });
+    res.status(201).json({
+      user,
+      token,
+    });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ err: 'Something went wrong' });
+
+    res.status(500).json({
+      err: 'Something went wrong',
+    });
   }
 };
 
@@ -48,7 +63,19 @@ const login = async (req, res) => {
     const userInDatabase = await User.findOne({ email });
 
     if (!userInDatabase) {
-      return res.status(401).json({ err: 'Invalid credentials' });
+      return res.status(401).json({
+        err: 'Invalid credentials',
+      });
+    }
+
+    /* =========================================
+       CHECK IF USER IS DISABLED
+    ========================================= */
+
+    if (!userInDatabase.isActive) {
+      return res.status(403).json({
+        err: 'Your account has been disabled.',
+      });
     }
 
     const passwordMatches = bcrypt.compareSync(
@@ -57,7 +84,9 @@ const login = async (req, res) => {
     );
 
     if (!passwordMatches) {
-      return res.status(401).json({ err: 'Invalid credentials' });
+      return res.status(401).json({
+        err: 'Invalid credentials',
+      });
     }
 
     const payload = {
@@ -67,7 +96,10 @@ const login = async (req, res) => {
       role: userInDatabase.role,
     };
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET);
+    const token = jwt.sign(
+      payload,
+      process.env.JWT_SECRET
+    );
 
     res.status(200).json({
       user: userInDatabase,
@@ -75,7 +107,10 @@ const login = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ err: 'Something went wrong' });
+
+    res.status(500).json({
+      err: 'Something went wrong',
+    });
   }
 };
 
