@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
 
 const jwt = require('jsonwebtoken');
-
 const User = require('../models/user');
 
 const SALT_ROUNDS = 10;
@@ -36,6 +35,7 @@ const signup = async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
+      profileImage: user.profileImage,
     };
 
     const token = jwt.sign(
@@ -94,6 +94,7 @@ const login = async (req, res) => {
       name: userInDatabase.name,
       email: userInDatabase.email,
       role: userInDatabase.role,
+      profileImage: userInDatabase.profileImage,
     };
 
     const token = jwt.sign(
