@@ -13,7 +13,13 @@ const createSwap = async (req, res) => {
       scheduledDate,
     });
 
-    res.status(201).json({ swap });
+    const populatedSwap = await Swap.findById(swap._id)
+      .populate('requester', 'name email profileImage')
+      .populate('receiver', 'name email profileImage')
+      .populate('skillOffered', 'name description category')
+      .populate('skillRequested', 'name description category');
+
+    res.status(201).json({ swap: populatedSwap });
   } catch (err) {
     res.status(500).json({ err: 'Something went wrong' });
   }
@@ -21,7 +27,12 @@ const createSwap = async (req, res) => {
 
 const getSwaps = async (req, res) => {
   try {
-    const swaps = await Swap.find();
+    const swaps = await Swap.find()
+      .populate('requester', 'name email profileImage')
+      .populate('receiver', 'name email profileImage')
+      .populate('skillOffered', 'name description category')
+      .populate('skillRequested', 'name description category');
+
     res.status(200).json({ swaps });
   } catch (err) {
     res.status(500).json({ err: 'Something went wrong' });
@@ -30,7 +41,12 @@ const getSwaps = async (req, res) => {
 
 const getSwap = async (req, res) => {
   try {
-    const swap = await Swap.findById(req.params.id);
+    const swap = await Swap.findById(req.params.id)
+      .populate('requester', 'name email profileImage')
+      .populate('receiver', 'name email profileImage')
+      .populate('skillOffered', 'name description category')
+      .populate('skillRequested', 'name description category');
+
     res.status(200).json({ swap });
   } catch (err) {
     res.status(500).json({ err: 'Something went wrong' });
@@ -43,7 +59,11 @@ const updateSwap = async (req, res) => {
       req.params.id,
       req.body,
       { new: true }
-    );
+    )
+      .populate('requester', 'name email profileImage')
+      .populate('receiver', 'name email profileImage')
+      .populate('skillOffered', 'name description category')
+      .populate('skillRequested', 'name description category');
 
     res.status(200).json({ swap });
   } catch (err) {
@@ -54,6 +74,7 @@ const updateSwap = async (req, res) => {
 const deleteSwap = async (req, res) => {
   try {
     await Swap.findByIdAndDelete(req.params.id);
+
     res.status(200).json({ message: 'Swap deleted successfully' });
   } catch (err) {
     res.status(500).json({ err: 'Something went wrong' });
