@@ -13,6 +13,20 @@ const skillSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
+      enum: [
+        'Programming & Technology',
+        'Design & Creative',
+        'Languages',
+        'Business & Career',
+        'Education & Tutoring',
+        'Music',
+        'Cooking & Food',
+        'Sports & Fitness',
+        'Arts & Crafts',
+        'Lifestyle',
+        'Outdoor & Adventure',
+        'Other',
+      ],
     },
     skillImage: {
       type: String,
