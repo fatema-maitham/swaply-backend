@@ -7,7 +7,25 @@ const getUser = async (req, res) => {
     res.status(200).json({ user });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ err: 'Something went wrong' });
+    res.status(500).json({
+      err: 'Something went wrong',
+    });
+  }
+};
+
+const getUsers = async (req, res) => {
+  try {
+    const users = await User.find()
+      .select('-password')
+      .sort({ name: 1 });
+
+    res.status(200).json({ users });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).json({
+      err: 'Something went wrong',
+    });
   }
 };
 
@@ -30,7 +48,10 @@ const updateUser = async (req, res) => {
     res.status(200).json({ user });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ err: 'Something went wrong' });
+
+    res.status(500).json({
+      err: 'Something went wrong',
+    });
   }
 };
 
@@ -38,15 +59,21 @@ const deleteUser = async (req, res) => {
   try {
     await User.findByIdAndDelete(req.user._id);
 
-    res.status(200).json({ message: 'User deleted successfully' });
+    res.status(200).json({
+      message: 'User deleted successfully',
+    });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ err: 'Something went wrong' });
+
+    res.status(500).json({
+      err: 'Something went wrong',
+    });
   }
 };
 
 module.exports = {
   getUser,
+  getUsers,
   updateUser,
   deleteUser,
 };

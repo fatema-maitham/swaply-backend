@@ -1,19 +1,38 @@
 const express = require('express');
-
 const userCtrl = require('../controllers/userCtrl');
-
 const upload = require('../middleware/upload');
 
 const router = express.Router();
 
+/*
+  GET /users
+  Get all registered users
+*/
+router.get('/', userCtrl.getUsers);
+
+/*
+  GET /users/profile
+  Get logged-in user's profile
+*/
 router.get('/profile', userCtrl.getUser);
 
+/*
+  PUT /users/profile
+  Update logged-in user's profile
+*/
 router.put(
   '/profile',
   upload.single('profileImage'),
   userCtrl.updateUser
 );
 
-router.delete('/profile', userCtrl.deleteUser);
+/*
+  DELETE /users/profile
+  Delete logged-in user's account
+*/
+router.delete(
+  '/profile',
+  userCtrl.deleteUser
+);
 
 module.exports = router;
