@@ -37,7 +37,7 @@ const getUsers = async (req, res) => {
 
 const getSkills = async (req, res) => {
   try {
-    const skills = await Skill.find();
+    const skills = await Skill.find().populate('owner', 'name');
 
     res.status(200).json({ skills });
   } catch (err) {
@@ -48,7 +48,11 @@ const getSkills = async (req, res) => {
 
 const getSwaps = async (req, res) => {
   try {
-    const swaps = await Swap.find();
+    const swaps = await Swap.find()
+      .populate('requester', 'name')
+      .populate('receiver', 'name')
+      .populate('skillOffered', 'name')
+      .populate('skillRequested', 'name');
 
     res.status(200).json({ swaps });
   } catch (err) {
