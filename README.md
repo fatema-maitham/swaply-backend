@@ -49,15 +49,21 @@ The platform also includes an admin side for managing users, skills, swap reques
 
 ### Admin User Stories
 
-- As an admin, I can access an admin dashboard.
-- As an admin, I can view platform statistics.
-- As an admin, I can view all users.
-- As an admin, I can delete a user account.
-- As an admin, I can view all skills.
-- As an admin, I can delete an inappropriate skill.
-- As an admin, I can view all swap requests.
-- As an admin, I can view all reviews.
-- As an admin, I can delete an inappropriate review.
+* As an admin, I can access an admin dashboard.
+* As an admin, I can view platform statistics.
+* As an admin, I can view all users.
+* As an admin, I can enable or disable a user account.
+* As an admin, I can delete a user account.
+* As an admin, I can view all skills.
+* As an admin, I can delete an inappropriate skill.
+* As an admin, I can view all categories.
+* As an admin, I can create a category.
+* As an admin, I can edit a category.
+* As an admin, I can delete a category.
+* As an admin, I can view all swap requests.
+* As an admin, I can view all reviews.
+* As an admin, I can delete an inappropriate review.
+* As an admin, I can view audit logs of administrative actions.
 
 ## ERD
 
@@ -94,6 +100,12 @@ The platform also includes an admin side for managing users, skills, swap reques
 | PUT             | updateSkill    |          200 | `/skills/:skillId` | Update a skill            |
 | DELETE          | deleteSkill    |          200 | `/skills/:skillId` | Delete a skill            |
 
+### Category Routes
+
+| **HTTP Method** | **Controller** | **Response** | **URI**       | **Use Case**                  |
+| --------------- | -------------- | -----------: | ------------- | ----------------------------- |
+| GET             | getCategories  |          200 | `/categories` | List all available categories |
+
 ### Swap Routes
 
 | **HTTP Method** | **Controller** | **Response** | **URI**          | **Use Case**                  |
@@ -116,16 +128,22 @@ The platform also includes an admin side for managing users, skills, swap reques
 
 ### Admin Routes
 
-| **HTTP Method** | **Controller** | **Response** | **URI**                    | **Use Case**                   |
-| --------------- | -------------- | -----------: | -------------------------- | ------------------------------ |
-| GET             | dashboard      |          200 | `/admin/dashboard`         | View platform statistics       |
-| GET             | getUsers       |          200 | `/admin/users`             | List all users                 |
-| GET             | getSkills      |          200 | `/admin/skills`            | List all skills                |
-| GET             | getSwaps       |          200 | `/admin/swaps`             | List all swap requests         |
-| GET             | getReviews     |          200 | `/admin/reviews`           | List all reviews               |
-| DELETE          | deleteUser     |          200 | `/admin/users/:userId`     | Delete a user account          |
-| DELETE          | deleteSkill    |          200 | `/admin/skills/:skillId`   | Delete an inappropriate skill  |
-| DELETE          | deleteReview   |          200 | `/admin/reviews/:reviewId` | Delete an inappropriate review |
+| **HTTP Method** | **Controller**   | **Response** | **URI**                         | **Use Case**                       |
+| --------------- | ---------------- | -----------: | ------------------------------- | ---------------------------------- |
+| GET             | dashboard        |          200 | `/admin/dashboard`              | View platform statistics           |
+| GET             | getUsers         |          200 | `/admin/users`                  | List all users                     |
+| PATCH           | toggleUserStatus |          200 | `/admin/users/:userId/status`   | Enable or disable a user account   |
+| DELETE          | deleteUser       |          200 | `/admin/users/:userId`          | Delete a user account              |
+| GET             | getSkills        |          200 | `/admin/skills`                 | List all skills                    |
+| DELETE          | deleteSkill      |          200 | `/admin/skills/:skillId`        | Delete an inappropriate skill      |
+| GET             | getCategories    |          200 | `/admin/categories`             | List all categories                |
+| POST            | createCategory   |          201 | `/admin/categories`             | Create a category                  |
+| PATCH           | updateCategory   |          200 | `/admin/categories/:categoryId` | Update a category                  |
+| DELETE          | deleteCategory   |          200 | `/admin/categories/:categoryId` | Delete a category                  |
+| GET             | getSwaps         |          200 | `/admin/swaps`                  | List all swap requests             |
+| GET             | getReviews       |          200 | `/admin/reviews`                | List all reviews                   |
+| DELETE          | deleteReview     |          200 | `/admin/reviews/:reviewId`      | Delete an inappropriate review     |
+| GET             | getAuditLogs     |          200 | `/admin/audit-logs`             | View administrative action history |
 
 ## Component Hierarchy Diagram
 
