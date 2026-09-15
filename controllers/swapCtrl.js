@@ -21,9 +21,15 @@ const createSwap = async (req, res) => {
 
 const getSwaps = async (req, res) => {
   try {
-    const swaps = await Swap.find();
+    const swaps = await Swap.find()
+      .populate('requester', 'name')
+      .populate('receiver', 'name')
+      .populate('skillOffered', 'name')
+      .populate('skillRequested', 'name');
+
     res.status(200).json({ swaps });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ err: 'Something went wrong' });
   }
 };
