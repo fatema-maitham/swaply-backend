@@ -15,7 +15,7 @@ const getUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
   try {
-    const users = await User.find()
+    const users = await User.find({ role: 'user' })
       .select('-password')
       .sort({ name: 1 });
 
@@ -71,9 +71,33 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      _id: req.params.id,
+      role: 'user',
+    }).select('name bio profileImage');
+
+    if (!user) {
+      return res.status(404).json({
+        err: 'User not found',
+      });
+    }
+
+    res.status(200).json({ user });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).json({
+      err: 'Something went wrong',
+    });
+  }
+};
+
 module.exports = {
   getUser,
   getUsers,
+  getUserById,
   updateUser,
   deleteUser,
 };
