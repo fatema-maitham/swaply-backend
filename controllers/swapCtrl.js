@@ -13,7 +13,23 @@ const createSwap = async (req, res) => {
       scheduledDate,
     });
 
+<<<<<<< Updated upstream
     res.status(201).json({ swap });
+=======
+    const populatedSwap = await Swap.findById(swap._id)
+      .populate('requester', 'name email profileImage')
+      .populate('receiver', 'name email profileImage')
+      .populate(
+        'skillOffered',
+        'name description category skillImage'
+      )
+      .populate(
+        'skillRequested',
+        'name description category skillImage'
+      );
+
+    res.status(201).json({ swap: populatedSwap });
+>>>>>>> Stashed changes
   } catch (err) {
     res.status(500).json({ err: 'Something went wrong' });
   }
@@ -21,7 +37,28 @@ const createSwap = async (req, res) => {
 
 const getSwaps = async (req, res) => {
   try {
+<<<<<<< Updated upstream
     const swaps = await Swap.find();
+=======
+    const swaps = await Swap.find({
+      $or: [
+        { requester: req.user._id },
+        { receiver: req.user._id },
+      ],
+    })
+      .sort({ createdAt: -1 })
+      .populate('requester', 'name email profileImage')
+      .populate('receiver', 'name email profileImage')
+      .populate(
+        'skillOffered',
+        'name description category skillImage'
+      )
+      .populate(
+        'skillRequested',
+        'name description category skillImage'
+      );
+
+>>>>>>> Stashed changes
     res.status(200).json({ swaps });
   } catch (err) {
     res.status(500).json({ err: 'Something went wrong' });
@@ -30,7 +67,22 @@ const getSwaps = async (req, res) => {
 
 const getSwap = async (req, res) => {
   try {
+<<<<<<< Updated upstream
     const swap = await Swap.findById(req.params.id);
+=======
+    const swap = await Swap.findById(req.params.id)
+      .populate('requester', 'name email profileImage')
+      .populate('receiver', 'name email profileImage')
+      .populate(
+        'skillOffered',
+        'name description category skillImage'
+      )
+      .populate(
+        'skillRequested',
+        'name description category skillImage'
+      );
+
+>>>>>>> Stashed changes
     res.status(200).json({ swap });
   } catch (err) {
     res.status(500).json({ err: 'Something went wrong' });
@@ -43,7 +95,21 @@ const updateSwap = async (req, res) => {
       req.params.id,
       req.body,
       { new: true }
+<<<<<<< Updated upstream
     );
+=======
+    )
+      .populate('requester', 'name email profileImage')
+      .populate('receiver', 'name email profileImage')
+      .populate(
+        'skillOffered',
+        'name description category skillImage'
+      )
+      .populate(
+        'skillRequested',
+        'name description category skillImage'
+      );
+>>>>>>> Stashed changes
 
     res.status(200).json({ swap });
   } catch (err) {
@@ -54,7 +120,14 @@ const updateSwap = async (req, res) => {
 const deleteSwap = async (req, res) => {
   try {
     await Swap.findByIdAndDelete(req.params.id);
+<<<<<<< Updated upstream
     res.status(200).json({ message: 'Swap deleted successfully' });
+=======
+
+    res.status(200).json({
+      message: 'Swap deleted successfully',
+    });
+>>>>>>> Stashed changes
   } catch (err) {
     res.status(500).json({ err: 'Something went wrong' });
   }

@@ -1,10 +1,10 @@
 const express = require('express');
-
 const userCtrl = require('../controllers/userCtrl');
-
 const upload = require('../middleware/upload');
 
 const router = express.Router();
+
+router.get('/', userCtrl.getUsers);
 
 router.get('/profile', userCtrl.getUser);
 
