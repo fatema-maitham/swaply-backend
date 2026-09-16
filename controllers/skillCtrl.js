@@ -20,13 +20,9 @@ const createSkill = async (req, res) => {
 
 const getSkills = async (req, res) => {
   try {
-<<<<<<< Updated upstream
-    const skills = await Skill.find();
-=======
     const skills = await Skill.find()
       .sort({ createdAt: -1 })
       .populate('owner', 'name profileImage');
->>>>>>> Stashed changes
 
     res.status(200).json({ skills });
   } catch (err) {
