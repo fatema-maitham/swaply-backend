@@ -4,6 +4,10 @@ const createSkill = async (req, res) => {
   try {
     const { name, description, category } = req.body;
 
+    console.log('SKILL BODY:', req.body);
+    console.log('SKILL FILE:', req.file);
+    console.log('SKILL USER:', req.user);
+
     if (!req.file) {
       return res.status(400).json({
         err: 'Skill image is required',
@@ -27,10 +31,10 @@ const createSkill = async (req, res) => {
       skill: populatedSkill,
     });
   } catch (err) {
-    console.log(err);
+    console.log('CREATE SKILL ERROR:', err);
 
     res.status(500).json({
-      err: 'Something went wrong',
+      err: err.message,
     });
   }
 };
@@ -39,7 +43,10 @@ const getSkills = async (req, res) => {
   try {
     const skills = await Skill.find()
       .sort({ createdAt: -1 })
-      .populate('owner', 'name profileImage');
+      .populate(
+        'owner',
+        'name profileImage'
+      );
 
     res.status(200).json({
       skills,

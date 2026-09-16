@@ -18,8 +18,14 @@ const createSwap = async (req, res) => {
     });
 
     const populatedSwap = await Swap.findById(swap._id)
-      .populate('requester', 'name email profileImage')
-      .populate('receiver', 'name email profileImage')
+      .populate(
+        'requester',
+        'name email profileImage'
+      )
+      .populate(
+        'receiver',
+        'name email profileImage'
+      )
       .populate(
         'skillOffered',
         'name description category skillImage'
@@ -50,8 +56,14 @@ const getSwaps = async (req, res) => {
       ],
     })
       .sort({ createdAt: -1 })
-      .populate('requester', 'name email profileImage')
-      .populate('receiver', 'name email profileImage')
+      .populate(
+        'requester',
+        'name email profileImage'
+      )
+      .populate(
+        'receiver',
+        'name email profileImage'
+      )
       .populate(
         'skillOffered',
         'name description category skillImage'
@@ -76,8 +88,14 @@ const getSwaps = async (req, res) => {
 const getSwap = async (req, res) => {
   try {
     const swap = await Swap.findById(req.params.id)
-      .populate('requester', 'name email profileImage')
-      .populate('receiver', 'name email profileImage')
+      .populate(
+        'requester',
+        'name email profileImage'
+      )
+      .populate(
+        'receiver',
+        'name email profileImage'
+      )
       .populate(
         'skillOffered',
         'name description category skillImage'
@@ -112,8 +130,14 @@ const updateSwap = async (req, res) => {
       req.body,
       { new: true }
     )
-      .populate('requester', 'name email profileImage')
-      .populate('receiver', 'name email profileImage')
+      .populate(
+        'requester',
+        'name email profileImage'
+      )
+      .populate(
+        'receiver',
+        'name email profileImage'
+      )
       .populate(
         'skillOffered',
         'name description category skillImage'
@@ -143,7 +167,9 @@ const updateSwap = async (req, res) => {
 
 const deleteSwap = async (req, res) => {
   try {
-    const swap = await Swap.findByIdAndDelete(req.params.id);
+    const swap = await Swap.findByIdAndDelete(
+      req.params.id
+    );
 
     if (!swap) {
       return res.status(404).json({
