@@ -20,6 +20,12 @@ const reviewSchema = new mongoose.Schema(
       required: true,
     },
 
+    skill: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Skill',
+      required: true,
+    },
+
     rating: {
       type: Number,
       required: true,
@@ -30,10 +36,22 @@ const reviewSchema = new mongoose.Schema(
     comment: {
       type: String,
       required: true,
+      trim: true,
     },
   },
   {
     timestamps: true,
+  }
+);
+
+reviewSchema.index(
+  {
+    reviewer: 1,
+    swap: 1,
+    skill: 1,
+  },
+  {
+    unique: true,
   }
 );
 
