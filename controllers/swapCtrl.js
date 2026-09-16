@@ -53,6 +53,7 @@ const getSwaps = async (req, res) => {
 
     res.status(200).json({ swaps });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ err: 'Something went wrong' });
   }
 };

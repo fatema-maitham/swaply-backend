@@ -7,7 +7,25 @@ const getUser = async (req, res) => {
     res.status(200).json({ user });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ err: 'Something went wrong' });
+    res.status(500).json({
+      err: 'Something went wrong',
+    });
+  }
+};
+
+const getUsers = async (req, res) => {
+  try {
+    const users = await User.find({ role: 'user' })
+      .select('-password')
+      .sort({ name: 1 });
+
+    res.status(200).json({ users });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).json({
+      err: 'Something went wrong',
+    });
   }
 };
 
@@ -42,7 +60,10 @@ const updateUser = async (req, res) => {
     res.status(200).json({ user });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ err: 'Something went wrong' });
+
+    res.status(500).json({
+      err: 'Something went wrong',
+    });
   }
 };
 
@@ -55,7 +76,33 @@ const deleteUser = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ err: 'Something went wrong' });
+
+    res.status(500).json({
+      err: 'Something went wrong',
+    });
+  }
+};
+
+const getUserById = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      _id: req.params.id,
+      role: 'user',
+    }).select('name bio profileImage');
+
+    if (!user) {
+      return res.status(404).json({
+        err: 'User not found',
+      });
+    }
+
+    res.status(200).json({ user });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).json({
+      err: 'Something went wrong',
+    });
   }
 };
 
