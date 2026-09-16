@@ -2,14 +2,30 @@ const User = require('../models/user');
 
 const getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
+    console.log('PROFILE USER:', req.user);
 
-    res.status(200).json({ user });
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({
+        err: 'Login Required',
+      });
+    }
+
+    const user = await User.findById(req.user._id).select('-password');
+
+    if (!user) {
+      return res.status(404).json({
+        err: 'User not found',
+      });
+    }
+
+    res.status(200).json({
+      user,
+    });
   } catch (err) {
-    console.log(err);
+    console.log('GET PROFILE ERROR:', err);
 
     res.status(500).json({
-      err: 'Something went wrong',
+      err: err.message,
     });
   }
 };
@@ -20,7 +36,9 @@ const getUsers = async (req, res) => {
       .select('-password')
       .sort({ name: 1 });
 
-    res.status(200).json({ users });
+    res.status(200).json({
+      users,
+    });
   } catch (err) {
     console.log(err);
 
@@ -43,28 +61,45 @@ const updateUser = async (req, res) => {
     const user = await User.findByIdAndUpdate(
       req.user._id,
       updateData,
-      { new: true }
-    );
+      {
+        new: true,
+        runValidators: true,
+      }
+    ).select('-password');
 
-    res.status(200).json({ user });
+    if (!user) {
+      return res.status(404).json({
+        err: 'User not found',
+      });
+    }
+
+    res.status(200).json({
+      user,
+    });
   } catch (err) {
-    console.log(err);
+    console.log('UPDATE USER ERROR:', err);
 
     res.status(500).json({
-      err: 'Something went wrong',
+      err: err.message,
     });
   }
 };
 
 const deleteUser = async (req, res) => {
   try {
-    await User.findByIdAndDelete(req.user._id);
+    const user = await User.findByIdAndDelete(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({
+        err: 'User not found',
+      });
+    }
 
     res.status(200).json({
       message: 'User deleted successfully',
     });
   } catch (err) {
-    console.log(err);
+    console.log('DELETE USER ERROR:', err);
 
     res.status(500).json({
       err: 'Something went wrong',
@@ -85,9 +120,11 @@ const getUserById = async (req, res) => {
       });
     }
 
-    res.status(200).json({ user });
+    res.status(200).json({
+      user,
+    });
   } catch (err) {
-    console.log(err);
+    console.log('GET PUBLIC USER ERROR:', err);
 
     res.status(500).json({
       err: 'Something went wrong',
@@ -102,3 +139,4 @@ module.exports = {
   updateUser,
   deleteUser,
 };
+

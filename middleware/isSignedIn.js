@@ -4,9 +4,21 @@ const isSignedIn = (req, res, next) => {
   try {
     const bearerToken = req.headers.authorization;
 
-    if (!bearerToken) throw new Error('Login Required');
+    if (!bearerToken) {
+      return res.status(401).json({
+        err: 'Login Required',
+      });
+    }
 
-    const token = bearerToken.split(' ')[1];
+    const parts = bearerToken.split(' ');
+
+    if (parts.length !== 2 || parts[0] !== 'Bearer') {
+      return res.status(401).json({
+        err: 'Invalid authorization format',
+      });
+    }
+
+    const token = parts[1];
 
     const payload = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -14,7 +26,11 @@ const isSignedIn = (req, res, next) => {
 
     next();
   } catch (err) {
-    res.status(401).json({ err: 'Login Required' });
+    console.log('AUTH ERROR:', err.message);
+
+    return res.status(401).json({
+      err: 'Login Required',
+    });
   }
 };
 

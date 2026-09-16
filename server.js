@@ -9,39 +9,26 @@ const express = require('express');
 const app = express();
 
 // Middleware
-
 const cors = require('cors');
-
 const logger = require('morgan');
 
 const isSignedIn = require('./middleware/isSignedIn');
-
 const isAdmin = require('./middleware/isAdmin');
 
 // Controllers
-
 const userCtrl = require('./controllers/userCtrl');
 
 // Routers
-
 const authRouter = require('./routes/authRouter');
-
 const userRouter = require('./routes/userRouter');
-
 const skillRouter = require('./routes/skillRouter');
-
 const swapRouter = require('./routes/swapRouter');
-
 const reviewRouter = require('./routes/reviewRouter');
-
 const adminRouter = require('./routes/adminRouter');
-
 const categoryRoutes = require('./routes/categoryRoutes');
 
 app.use(cors());
-
 app.use(express.json());
-
 app.use(logger('dev'));
 
 // ========================================
@@ -52,10 +39,24 @@ app.use('/auth', authRouter);
 
 app.use('/categories', categoryRoutes);
 
-// Community
+// ========================================
+// USER ROUTES
+// ========================================
+
+// Public Community
 app.get('/users', userCtrl.getUsers);
 
-// Skills
+// Protected own profile
+// MUST come before /users/:id
+app.use('/users', isSignedIn, userRouter);
+
+// Public user profile
+app.get('/users/:id', userCtrl.getUserById);
+
+// ========================================
+// SKILLS
+// ========================================
+
 app.use('/skills', skillRouter);
 
 // ========================================
@@ -64,23 +65,11 @@ app.use('/skills', skillRouter);
 
 app.use(isSignedIn);
 
-// User account
-// /users/profile
-app.use('/users', userRouter);
-
 // Swaps
 app.use('/swaps', swapRouter);
 
 // Reviews
 app.use('/reviews', reviewRouter);
-
-// ========================================
-// PUBLIC USER PROFILE
-// ========================================
-
-// This MUST come after /users
-// so /users/profile goes to userRouter.
-app.get('/users/:id', userCtrl.getUserById);
 
 // ========================================
 // ADMIN ROUTES
@@ -94,10 +83,8 @@ app.use('/admin', isAdmin, adminRouter);
 
 app.get('/protected', (req, res) => {
   try {
-    const userPayload = req.user;
-
     res.status(200).json({
-      user: userPayload,
+      user: req.user,
     });
   } catch (error) {
     console.log(error);
