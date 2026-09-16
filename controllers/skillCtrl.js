@@ -28,6 +28,7 @@ const createSkill = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
+
     res.status(500).json({
       err: 'Something went wrong',
     });
@@ -36,16 +37,16 @@ const createSkill = async (req, res) => {
 
 const getSkills = async (req, res) => {
   try {
-    const skills = await Skill.find().populate(
-      'owner',
-      'name profileImage'
-    );
+    const skills = await Skill.find()
+      .sort({ createdAt: -1 })
+      .populate('owner', 'name profileImage');
 
     res.status(200).json({
       skills,
     });
   } catch (err) {
     console.log(err);
+
     res.status(500).json({
       err: 'Something went wrong',
     });
@@ -70,6 +71,7 @@ const getSkill = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
+
     res.status(500).json({
       err: 'Something went wrong',
     });
@@ -113,6 +115,7 @@ const updateSkill = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
+
     res.status(500).json({
       err: 'Something went wrong',
     });
@@ -142,6 +145,7 @@ const deleteSkill = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
+
     res.status(500).json({
       err: 'Something went wrong',
     });

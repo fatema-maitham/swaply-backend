@@ -1,7 +1,5 @@
 const express = require('express');
-
 const userCtrl = require('../controllers/userCtrl');
-
 const upload = require('../middleware/upload');
 
 const router = express.Router();
@@ -10,6 +8,8 @@ const router = express.Router();
   GET /users/profile
   Get logged-in user's profile
 */
+router.get('/', userCtrl.getUsers);
+
 router.get('/profile', userCtrl.getUser);
 
 /*
