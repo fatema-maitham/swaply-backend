@@ -128,7 +128,21 @@ const getReviews = async (req, res) => {
     const reviews = await Review.find()
       .populate('reviewer', 'name email')
       .populate('reviewedUser', 'name email')
-      .populate('swap', 'status');
+      .populate({
+        path: 'swap',
+        select: 'status skillOffered skillRequested',
+        populate: [
+          {
+            path: 'skillOffered',
+            select: 'name',
+          },
+          {
+            path: 'skillRequested',
+            select: 'name',
+          },
+        ],
+      })
+      .sort({ createdAt: -1 });
 
     res.status(200).json({
       reviews,
@@ -148,9 +162,7 @@ const getReviews = async (req, res) => {
 
 const toggleUserStatus = async (req, res) => {
   try {
-    const user = await User.findById(
-      req.params.userId
-    );
+    const user = await User.findById(req.params.userId);
 
     if (!user) {
       return res.status(404).json({
@@ -164,17 +176,12 @@ const toggleUserStatus = async (req, res) => {
 
     await createAuditLog({
       adminId: req.user._id,
-
       action: user.isActive
         ? 'Enabled User'
         : 'Disabled User',
-
       targetType: 'User',
-
       targetId: user._id,
-
       targetName: user.name,
-
       details: user.isActive
         ? `Enabled user account for ${user.email}`
         : `Disabled user account for ${user.email}`,
@@ -184,7 +191,6 @@ const toggleUserStatus = async (req, res) => {
       message: user.isActive
         ? 'User enabled successfully'
         : 'User disabled successfully',
-
       user,
     });
   } catch (err) {
@@ -202,9 +208,7 @@ const toggleUserStatus = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const user = await User.findById(
-      req.params.userId
-    );
+    const user = await User.findById(req.params.userId);
 
     if (!user) {
       return res.status(404).json({
@@ -212,21 +216,14 @@ const deleteUser = async (req, res) => {
       });
     }
 
-    await User.findByIdAndDelete(
-      req.params.userId
-    );
+    await User.findByIdAndDelete(req.params.userId);
 
     await createAuditLog({
       adminId: req.user._id,
-
       action: 'Deleted User',
-
       targetType: 'User',
-
       targetId: user._id,
-
       targetName: user.name,
-
       details: `Deleted user account ${user.email}`,
     });
 
@@ -248,9 +245,7 @@ const deleteUser = async (req, res) => {
 
 const deleteSkill = async (req, res) => {
   try {
-    const skill = await Skill.findById(
-      req.params.skillId
-    );
+    const skill = await Skill.findById(req.params.skillId);
 
     if (!skill) {
       return res.status(404).json({
@@ -258,21 +253,14 @@ const deleteSkill = async (req, res) => {
       });
     }
 
-    await Skill.findByIdAndDelete(
-      req.params.skillId
-    );
+    await Skill.findByIdAndDelete(req.params.skillId);
 
     await createAuditLog({
       adminId: req.user._id,
-
       action: 'Deleted Skill',
-
       targetType: 'Skill',
-
       targetId: skill._id,
-
       targetName: skill.name,
-
       details: `Deleted skill "${skill.name}"`,
     });
 
@@ -310,15 +298,10 @@ const deleteReview = async (req, res) => {
 
     await createAuditLog({
       adminId: req.user._id,
-
       action: 'Deleted Review',
-
       targetType: 'Review',
-
       targetId: review._id,
-
       targetName: `Review #${review._id}`,
-
       details: `Deleted review with rating ${review.rating}/5`,
     });
 
@@ -388,10 +371,9 @@ const createCategory = async (req, res) => {
       });
     }
 
-    const existingCategory =
-      await Category.findOne({
-        name: name.trim(),
-      });
+    const existingCategory = await Category.findOne({
+      name: name.trim(),
+    });
 
     if (existingCategory) {
       return res.status(409).json({
@@ -405,15 +387,10 @@ const createCategory = async (req, res) => {
 
     await createAuditLog({
       adminId: req.user._id,
-
       action: 'Created Category',
-
       targetType: 'Category',
-
       targetId: category._id,
-
       targetName: category.name,
-
       details: `Created category "${category.name}"`,
     });
 
@@ -439,10 +416,9 @@ const updateCategory = async (req, res) => {
       });
     }
 
-    const category =
-      await Category.findById(
-        req.params.categoryId
-      );
+    const category = await Category.findById(
+      req.params.categoryId
+    );
 
     if (!category) {
       return res.status(404).json({
@@ -452,11 +428,10 @@ const updateCategory = async (req, res) => {
 
     const oldName = category.name;
 
-    const existingCategory =
-      await Category.findOne({
-        name: name.trim(),
-        _id: { $ne: category._id },
-      });
+    const existingCategory = await Category.findOne({
+      name: name.trim(),
+      _id: { $ne: category._id },
+    });
 
     if (existingCategory) {
       return res.status(409).json({
@@ -470,15 +445,10 @@ const updateCategory = async (req, res) => {
 
     await createAuditLog({
       adminId: req.user._id,
-
       action: 'Updated Category',
-
       targetType: 'Category',
-
       targetId: category._id,
-
       targetName: category.name,
-
       details:
         `Changed category from "${oldName}" ` +
         `to "${category.name}"`,
@@ -498,10 +468,9 @@ const updateCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
   try {
-    const category =
-      await Category.findById(
-        req.params.categoryId
-      );
+    const category = await Category.findById(
+      req.params.categoryId
+    );
 
     if (!category) {
       return res.status(404).json({
@@ -515,15 +484,10 @@ const deleteCategory = async (req, res) => {
 
     await createAuditLog({
       adminId: req.user._id,
-
       action: 'Deleted Category',
-
       targetType: 'Category',
-
       targetId: category._id,
-
       targetName: category.name,
-
       details:
         `Deleted category "${category.name}"`,
     });
@@ -546,20 +510,15 @@ const deleteCategory = async (req, res) => {
 
 module.exports = {
   dashboard,
-
   getUsers,
   getSkills,
   getSwaps,
   getReviews,
-
   getAuditLogs,
-
   toggleUserStatus,
-
   deleteUser,
   deleteSkill,
   deleteReview,
-
   getCategories,
   createCategory,
   updateCategory,
