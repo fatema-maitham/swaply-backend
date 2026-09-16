@@ -5,33 +5,26 @@ const skillSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+      trim: true,
     },
+
     description: {
       type: String,
       required: true,
+      trim: true,
     },
+
     category: {
       type: String,
       required: true,
-      enum: [
-        'Programming & Technology',
-        'Design & Creative',
-        'Languages',
-        'Business & Career',
-        'Education & Tutoring',
-        'Music',
-        'Cooking & Food',
-        'Sports & Fitness',
-        'Arts & Crafts',
-        'Lifestyle',
-        'Outdoor & Adventure',
-        'Other',
-      ],
+      trim: true,
     },
+
     skillImage: {
       type: String,
       required: true,
     },
+
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

@@ -1,8 +1,9 @@
 const multer = require('multer');
-const { skillStorage } = require('../config/cloudinary');
 
-const skillUpload = multer({
-  storage: skillStorage,
+const { profileStorage } = require('../config/cloudinary');
+
+const upload = multer({
+  storage: profileStorage,
 });
 
-module.exports = skillUpload;
+module.exports = upload;
