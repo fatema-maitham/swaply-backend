@@ -102,9 +102,12 @@ The platform also includes an admin side for managing users, skills, swap reques
 
 ### Category Routes
 
-| **HTTP Method** | **Controller** | **Response** | **URI**       | **Use Case**                  |
-| --------------- | -------------- | -----------: | ------------- | ----------------------------- |
-| GET             | getCategories  |          200 | `/categories` | List all available categories |
+| **HTTP Method** | **Controller**  | **Response** | **URI**                    | **Use Case**                  |
+| --------------- | --------------- | -----------: | -------------------------- | ----------------------------- |
+| GET             | getCategories   |          200 | `/categories`              | List all available categories |
+| POST            | createCategory  |          201 | `/categories`              | Create a category             |
+| PATCH           | updateCategory  |          200 | `/categories/:categoryId`  | Update a category             |
+| DELETE          | deleteCategory  |          200 | `/categories/:categoryId`  | Delete a category             |
 
 ### Swap Routes
 
@@ -120,30 +123,26 @@ The platform also includes an admin side for managing users, skills, swap reques
 
 | **HTTP Method** | **Controller** | **Response** | **URI**              | **Use Case**                 |
 | --------------- | -------------- | -----------: | -------------------- | ---------------------------- |
-| POST            | createReview   |          201 | `/reviews`           | Create a review after a swap |
-| GET             | getReviews     |          200 | `/reviews`           | List reviews                 |
-| GET             | showReview     |          200 | `/reviews/:reviewId` | Get a single review          |
-| PUT             | updateReview   |          200 | `/reviews/:reviewId` | Update a review              |
-| DELETE          | deleteReview   |          200 | `/reviews/:reviewId` | Delete a review              |
+| POST             | createReview  |          201 | `/reviews`           | Create a review after a swap |
+| GET              | getReviews    |          200 | `/reviews`           | List reviews                 |
+| GET              | showReview    |          200 | `/reviews/:reviewId` | Get a single review          |
+| PUT              | updateReview  |          200 | `/reviews/:reviewId` | Update a review              |
+| DELETE           | deleteReview  |          200 | `/reviews/:reviewId` | Delete a review              |
 
 ### Admin Routes
 
-| **HTTP Method** | **Controller**   | **Response** | **URI**                         | **Use Case**                       |
-| --------------- | ---------------- | -----------: | ------------------------------- | ---------------------------------- |
-| GET             | dashboard        |          200 | `/admin/dashboard`              | View platform statistics           |
-| GET             | getUsers         |          200 | `/admin/users`                  | List all users                     |
-| PATCH           | toggleUserStatus |          200 | `/admin/users/:userId/status`   | Enable or disable a user account   |
-| DELETE          | deleteUser       |          200 | `/admin/users/:userId`          | Delete a user account              |
-| GET             | getSkills        |          200 | `/admin/skills`                 | List all skills                    |
-| DELETE          | deleteSkill      |          200 | `/admin/skills/:skillId`        | Delete an inappropriate skill      |
-| GET             | getCategories    |          200 | `/admin/categories`             | List all categories                |
-| POST            | createCategory   |          201 | `/admin/categories`             | Create a category                  |
-| PATCH           | updateCategory   |          200 | `/admin/categories/:categoryId` | Update a category                  |
-| DELETE          | deleteCategory   |          200 | `/admin/categories/:categoryId` | Delete a category                  |
-| GET             | getSwaps         |          200 | `/admin/swaps`                  | List all swap requests             |
-| GET             | getReviews       |          200 | `/admin/reviews`                | List all reviews                   |
-| DELETE          | deleteReview     |          200 | `/admin/reviews/:reviewId`      | Delete an inappropriate review     |
-| GET             | getAuditLogs     |          200 | `/admin/audit-logs`             | View administrative action history |
+| **HTTP Method** | **Controller**   | **Response** | **URI**                       | **Use Case**                       |
+| --------------- | ---------------- | -----------: | ----------------------------- | ---------------------------------- |
+| GET             | dashboard        |          200 | `/admin/dashboard`            | View platform statistics           |
+| GET             | getUsers         |          200 | `/admin/users`                | List all users                     |
+| PATCH           | toggleUserStatus |          200 | `/admin/users/:userId/status` | Enable or disable a user account   |
+| DELETE          | deleteUser       |          200 | `/admin/users/:userId`        | Delete a user account              |
+| GET             | getSkills        |          200 | `/admin/skills`               | List all skills                    |
+| DELETE          | deleteSkill      |          200 | `/admin/skills/:skillId`      | Delete an inappropriate skill      |
+| GET             | getSwaps         |          200 | `/admin/swaps`                | List all swap requests             |
+| GET             | getReviews       |          200 | `/admin/reviews`              | List all reviews                   |
+| DELETE           | deleteReview    |          200 | `/admin/reviews/:reviewId`    | Delete an inappropriate review     |
+| GET              | getAuditLogs    |          200 | `/admin/audit-logs`           | View administrative action history |
 
 ## Component Hierarchy Diagram
 
