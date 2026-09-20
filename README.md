@@ -211,6 +211,10 @@ npm run dev
 - JWT
 - bcrypt
 
+## Frontend Repository
+
+[Swaply Frontend Repository](https://github.com/fatema-maitham/swaply-frontend.git)
+
 ## Future Enhancements
 
 - Skill matching and recommendations
