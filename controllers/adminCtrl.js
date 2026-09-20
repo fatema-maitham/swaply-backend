@@ -3,7 +3,6 @@ const Skill = require('../models/skill');
 const Swap = require('../models/swap');
 const Review = require('../models/review');
 const AuditLog = require('../models/auditLog');
-const Category = require('../models/category');
 
 const createAuditLog = async ({
   adminId,
@@ -44,7 +43,6 @@ const dashboard = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-
     res.status(500).json({
       err: 'Something went wrong',
     });
@@ -64,7 +62,6 @@ const getUsers = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-
     res.status(500).json({
       err: 'Something went wrong',
     });
@@ -87,7 +84,6 @@ const getSkills = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-
     res.status(500).json({
       err: 'Something went wrong',
     });
@@ -112,7 +108,6 @@ const getSwaps = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-
     res.status(500).json({
       err: 'Something went wrong',
     });
@@ -149,7 +144,6 @@ const getReviews = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-
     res.status(500).json({
       err: 'Something went wrong',
     });
@@ -195,7 +189,6 @@ const toggleUserStatus = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-
     res.status(500).json({
       err: 'Something went wrong',
     });
@@ -232,7 +225,6 @@ const deleteUser = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-
     res.status(500).json({
       err: 'Something went wrong',
     });
@@ -269,7 +261,6 @@ const deleteSkill = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-
     res.status(500).json({
       err: 'Something went wrong',
     });
@@ -310,7 +301,6 @@ const deleteReview = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-
     res.status(500).json({
       err: 'Something went wrong',
     });
@@ -332,172 +322,6 @@ const getAuditLogs = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-
-    res.status(500).json({
-      err: 'Something went wrong',
-    });
-  }
-};
-
-// =========================================
-// CATEGORIES
-// =========================================
-
-const getCategories = async (req, res) => {
-  try {
-    const categories = await Category.find().sort({
-      name: 1,
-    });
-
-    res.status(200).json({
-      categories,
-    });
-  } catch (err) {
-    console.log(err);
-
-    res.status(500).json({
-      err: 'Something went wrong',
-    });
-  }
-};
-
-const createCategory = async (req, res) => {
-  try {
-    const { name } = req.body;
-
-    if (!name || !name.trim()) {
-      return res.status(400).json({
-        err: 'Category name is required',
-      });
-    }
-
-    const existingCategory = await Category.findOne({
-      name: name.trim(),
-    });
-
-    if (existingCategory) {
-      return res.status(409).json({
-        err: 'Category already exists',
-      });
-    }
-
-    const category = await Category.create({
-      name: name.trim(),
-    });
-
-    await createAuditLog({
-      adminId: req.user._id,
-      action: 'Created Category',
-      targetType: 'Category',
-      targetId: category._id,
-      targetName: category.name,
-      details: `Created category "${category.name}"`,
-    });
-
-    res.status(201).json({
-      category,
-    });
-  } catch (err) {
-    console.log(err);
-
-    res.status(500).json({
-      err: 'Something went wrong',
-    });
-  }
-};
-
-const updateCategory = async (req, res) => {
-  try {
-    const { name } = req.body;
-
-    if (!name || !name.trim()) {
-      return res.status(400).json({
-        err: 'Category name is required',
-      });
-    }
-
-    const category = await Category.findById(
-      req.params.categoryId
-    );
-
-    if (!category) {
-      return res.status(404).json({
-        err: 'Category not found',
-      });
-    }
-
-    const oldName = category.name;
-
-    const existingCategory = await Category.findOne({
-      name: name.trim(),
-      _id: { $ne: category._id },
-    });
-
-    if (existingCategory) {
-      return res.status(409).json({
-        err: 'Category already exists',
-      });
-    }
-
-    category.name = name.trim();
-
-    await category.save();
-
-    await createAuditLog({
-      adminId: req.user._id,
-      action: 'Updated Category',
-      targetType: 'Category',
-      targetId: category._id,
-      targetName: category.name,
-      details:
-        `Changed category from "${oldName}" ` +
-        `to "${category.name}"`,
-    });
-
-    res.status(200).json({
-      category,
-    });
-  } catch (err) {
-    console.log(err);
-
-    res.status(500).json({
-      err: 'Something went wrong',
-    });
-  }
-};
-
-const deleteCategory = async (req, res) => {
-  try {
-    const category = await Category.findById(
-      req.params.categoryId
-    );
-
-    if (!category) {
-      return res.status(404).json({
-        err: 'Category not found',
-      });
-    }
-
-    await Category.findByIdAndDelete(
-      req.params.categoryId
-    );
-
-    await createAuditLog({
-      adminId: req.user._id,
-      action: 'Deleted Category',
-      targetType: 'Category',
-      targetId: category._id,
-      targetName: category.name,
-      details:
-        `Deleted category "${category.name}"`,
-    });
-
-    res.status(200).json({
-      message: 'Category deleted successfully',
-    });
-  } catch (err) {
-    console.log(err);
-
     res.status(500).json({
       err: 'Something went wrong',
     });
@@ -519,8 +343,4 @@ module.exports = {
   deleteUser,
   deleteSkill,
   deleteReview,
-  getCategories,
-  createCategory,
-  updateCategory,
-  deleteCategory,
 };
